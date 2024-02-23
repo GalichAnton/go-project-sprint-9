@@ -55,10 +55,12 @@ func main() {
 	var inputSum int64
 	var inputCount int64
 
-	go Generator(ctx, chIn, func(i int64) {
-		atomic.AddInt64(&inputSum, i)
-		atomic.AddInt64(&inputCount, 1)
-	})
+	go Generator(
+		ctx, chIn, func(i int64) {
+			atomic.AddInt64(&inputSum, i)
+			atomic.AddInt64(&inputCount, 1)
+		},
+	)
 
 	const NumOut = 10
 	outs := make([]chan int64, NumOut)
@@ -93,8 +95,8 @@ func main() {
 	var sum int64
 
 	for val := range chOut {
-		atomic.AddInt64(&count, 1)
-		atomic.AddInt64(&sum, val)
+		count++
+		sum += val
 	}
 
 	fmt.Println("Количество чисел", inputCount, count)
